@@ -16,99 +16,13 @@ const int NODE_AMOUNT = 3;
 const int CREATURES = 100;
 // Amount of generations for the simulation to run for
 const int GENERATIONS = 100;
+// The rate at which to print generations
+const int STEP = 10;
 // Chance of a gene mutating when it is passed on
 const double MUTATION_RATE = 0.05;
 
 // Creature
-class Creature {
-	// Takes in the inputs of a, b, c
-	double input[3];
-	// Weights (genes)
-	double node_weights[NODE_AMOUNT*3];
-	double output_weights[NODE_AMOUNT];
-	// Hidden nodes
-	double nodes[NODE_AMOUNT];
-	// Outputs x
-	double output = 0;
-
-	/*	Parent 1 Index, Parent 1 Generation
-		Parent 2 Index, Parent 2 Generation */
-	int parents[4] = { -1, -1, -1, -1 };
-
-public:
-	// Initialise the creature with a seed (used for first generation only)
-	void seed () {
-		for (unsigned i = 0; i < sizeof(node_weights)/sizeof(double); i++)
-			node_weights[i] = 2*rand()/(RAND_MAX + 1.0);
-		for (unsigned i = 0; i < sizeof(output_weights)/sizeof(double); i++)
-			output_weights[i] = 2*rand()/(RAND_MAX + 1.0);
-	}
-
-	// Input values
-	void set_input (double a, double b, double c) {
-		input[0] = a;
-		input[1] = b;
-		input[2] = c;
-	}
-
-	// Parents
-	void set_parents (int p[4]) {
-		for (unsigned i = 0; i<4; i++)
-			parents[i] = p[i];
-	}
-	std::string get_parents () {
-		if (parents[0] < 0)
-			return "N/A";
-		return std::to_string(parents[0]) + "G" +
-			std::to_string(parents[1]) + "," +
-			std::to_string(parents[2]) + "G" +
-			std::to_string(parents[3]);
-	}
-
-	// Get the output from the genes and input
-	double get_output () {
-		// Each node is equal to the three weighted inputs summed
-		for (unsigned i = 0; i < sizeof(nodes)/sizeof(double); i++) {
-			nodes[i] =
-				input[0] * node_weights[i] +
-				input[1] * node_weights[NODE_AMOUNT+i] +
-				input[2] * node_weights[NODE_AMOUNT*2+i];
-		}
-
-		output = 0;
-		// The output is equal to the weighted nodes summed
-		for (unsigned i = 0; i < sizeof(nodes)/sizeof(double); i++)
-			output += nodes[i] * output_weights[i];
-
-		return output;
-	}
-
-	// Get fitness
-	double get_fitness () {
-		double x = get_output();
-		double real_x = (input[2] - input[1]) / input[0];
-		return (1 / std::abs(real_x - x));
-	}
-
-	// Get average fitness for several tests
-	double get_avg_fitness (std::vector<std::vector<double>> t) {
-		double total_fitness = 0;
-
-		for (unsigned i = 0; i < t.size(); i++) {
-			set_input(t[i][0], t[i][1], t[i][2]);
-			total_fitness += get_fitness();
-		}
-
-		return total_fitness / t.size();
-	}
-
-	// Breed with another creature
-	Creature breed (Creature c) {
-		// TODO
-
-		return Creature();
-	}
-};
+#include "creature.h"
 
 // Main function
 int main () {
@@ -163,7 +77,7 @@ int main () {
 		}
 
 		// Print information
-		if (!(gen % 10) || gen == GENERATIONS-1) {
+		if (!(gen % STEP) || gen == GENERATIONS-1) {
 			printf("GENERATION %u\n", gen);
 			printf("Mean fitness: %f\n", sumFitness/fitnesses.size());
 			printf("Highest fitness: %f (Parents: %s)\n\n",
@@ -210,6 +124,7 @@ int main () {
 			} while	(p1 == p2);
 
 			// TODO: Breeding
+			population[p1].breed(gen, p1, p2, population[p2]);
 		}
 	}
 
