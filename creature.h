@@ -97,9 +97,12 @@ public:
 			// Mutate genes
 			if (rand()/(RAND_MAX + 1.0) < MUTATION_RATE) {
 				n_w[i] += 2*rand()/(RAND_MAX + 1.0);
-				if (n_w > 1 || n_w < -1)
-					n_w %= 1;
+				if (n_w[i] > 1 || n_w[i] < -1)
+					n_w[i] = n_w[i] + ( n_w[i] > 1 ? -1 : 1 ) * floor(n_w[i]);
 			}
+
+			// Set the genes
+			child.node_weights[i] = n_w[i];
 		}
 
 		// Output weights
@@ -113,13 +116,15 @@ public:
 			// Mutate genes
 			if (rand()/(RAND_MAX + 1.0) < MUTATION_RATE) {
 				o_w[i] += 2*rand()/(RAND_MAX + 1.0);
-				if (o_w > 1 || o_w < -1)
-					o_w %= 1;
+				if (o_w[i] > 1 || o_w[i] < -1)
+					o_w[i] = o_w[i] + ( o_w[i] > 1 ? -1 : 1 ) * floor(o_w[i]);
 			}
+
+			// Set the genes
+			child.output_weights[i] = o_w[i];
 		}
 
-		// TODO
-
+		// Return this new creature
 		return child;
 	}
 };
