@@ -66,7 +66,7 @@ public:
 	double get_fitness () {
 		double x = get_output();
 		double real_x = (input[2] - input[1]) / input[0];
-		return (1 / std::abs(real_x - x));
+		return atan(1/std::abs(real_x - x))*2/M_PI;
 	}
 
 	// Get average fitness for several tests
