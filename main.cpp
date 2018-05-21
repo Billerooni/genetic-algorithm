@@ -9,15 +9,15 @@
 #include <string>
 
 // Amount of equations for the creatures to be tested on
-const int TESTS = 1;
+const int TESTS = 3;
 // Amount of nodes the creatures uses for calculation
-const int NODE_AMOUNT = 3;
+const int NODE_AMOUNT = 5;
 // Amount of creatures in the population
 const int CREATURES = 100;
 // Amount of generations for the simulation to run for
-const int GENERATIONS = 100;
+const int GENERATIONS = 10000;
 // The rate at which to print generations
-const int STEP = 10;
+const int STEP = 1000;
 // Chance of a gene mutating when it is passed on
 const double MUTATION_RATE = 0.05;
 
@@ -48,11 +48,14 @@ int main () {
 	std::vector<Creature> population = {};
 	population.resize(CREATURES);
 
-	std::vector<double> fitnesses = {};
-	fitnesses.resize(CREATURES);
-
 	// Loop through each generation
 	for (unsigned gen = 0; gen < GENERATIONS; gen++) {
+		// Reset the last generation's variables
+		std::vector<double> fitnesses = {};
+		fitnesses.resize(CREATURES);
+		std::vector<Creature> nextPopulation = {};
+		nextPopulation.resize(CREATURES);
+
 		// Loop through each creature
 		for (unsigned cr = 0; cr < CREATURES; cr++) {
 			// Seed the first population
@@ -82,6 +85,16 @@ int main () {
 			printf("Mean fitness: %f\n", sumFitness/fitnesses.size());
 			printf("Highest fitness: %f (Parents: %s)\n\n",
 				fitnesses[hFit], population[hFit].get_parents().c_str());
+
+			if (gen == GENERATIONS-1) {
+				for (unsigned i = 0; i < TESTS; i++) {
+					population[hFit].set_input(tests[i][0], tests[i][1], tests[i][2]);
+					printf("TEST %d\n", i+1);
+					printf("Output: %f\n", population[hFit].get_output());
+					printf("True value: %f\n\n",
+						(tests[i][2] - tests[i][1]) / tests[i][0]);
+				}
+			}
 		}
 
 		// Breed and create the next generation
@@ -123,9 +136,13 @@ int main () {
 				}
 			} while	(p1 == p2);
 
-			// TODO: Breeding
-			population[p1].breed(gen, p1, p2, population[p2]);
+			// Breed and create the next population
+			nextPopulation[j] =
+				population[p1].breed(gen, p1, p2, population[p2]);
 		}
+
+		// Set the next population
+		population = nextPopulation;
 	}
 
 	return 0;
