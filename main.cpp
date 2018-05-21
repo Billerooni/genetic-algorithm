@@ -9,6 +9,7 @@
 #include <vector>
 
 // Constants
+const int TESTS = 1;
 const int NODE_AMOUNT = 3;
 const int CREATURES = 100;
 const int GENERATIONS = 100;
