@@ -17,7 +17,7 @@ The amount of creatures created for each generation.
 The amount of generations the algorithm runs through before it reaches its final answer.
 
 ### STEP
-The rate at which generational results are printed. For example, at the default rate of 1000: Generation 0, then Generation 21000, then Generation 2000, etc. will be printed.
+The rate at which generational results are printed. For example, at the default rate of 1000: Generation 0, then Generation 1000, then Generation 2000, etc. will be printed.
 
 ### MUTATION_RATE
 The chance that a gene (node or node weight) will change into a completely new one. The default 0.05 means a 5% chance for each gene.
