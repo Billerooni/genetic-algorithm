@@ -5,7 +5,7 @@
 // Amount of nodes the creatures uses for calculation
 #define NODE_AMOUNT 5
 // Amount of creatures in the population
-#define CREATURES = 100
+#define CREATURES 100
 // Amount of generations for the simulation to run for
 #define GENERATIONS 10000
 // The rate at which to print generations
