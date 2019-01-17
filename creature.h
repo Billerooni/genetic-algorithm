@@ -1,14 +1,4 @@
 class Creature {
-	// Takes in the inputs of a, b, c
-	double input[3];
-	// Hidden nodes
-	double nodes[NODE_AMOUNT];
-	// Outputs x
-	double output = 0;
-
-	//	Generation, Index 1, Index 2
-	int parents[3] = { -1, -1, -1 };
-
 public:
 	// Weights (genes)
 	double node_weights[NODE_AMOUNT*3];
@@ -82,9 +72,9 @@ public:
 	}
 
 	// Breed with another creature
-	Creature breed (unsigned gen, unsigned p1, unsigned p2, Creature c) {
-		Creature child;
-		child.set_parents(gen, p1, p2);
+	Creature * breed (unsigned gen, unsigned p1, unsigned p2, Creature * c) {
+		Creature * child;
+		child->set_parents(gen, p1, p2);
 
 		// Node weights
 		double n_w[NODE_AMOUNT*3];
@@ -92,7 +82,7 @@ public:
 			// Randomly allocate genes from each parent
 			n_w[i] = node_weights[i];
 			if (rand()/(RAND_MAX + 1.0) < 0.5)
-				n_w[i] = c.node_weights[i];
+				n_w[i] = c->node_weights[i];
 
 			// Mutate genes
 			if (rand()/(RAND_MAX + 1.0) < MUTATION_RATE) {
@@ -102,7 +92,7 @@ public:
 			}
 
 			// Set the genes
-			child.node_weights[i] = n_w[i];
+			child->node_weights[i] = n_w[i];
 		}
 
 		// Output weights
@@ -111,7 +101,7 @@ public:
 			// Randomly allocate genes from each parent
 			o_w[i] = output_weights[i];
 			if (rand()/(RAND_MAX + 1.0) < 0.5)
-				o_w[i] = c.output_weights[i];
+				o_w[i] = c->output_weights[i];
 
 			// Mutate genes
 			if (rand()/(RAND_MAX + 1.0) < MUTATION_RATE) {
@@ -121,10 +111,20 @@ public:
 			}
 
 			// Set the genes
-			child.output_weights[i] = o_w[i];
+			child->output_weights[i] = o_w[i];
 		}
 
 		// Return this new creature
 		return child;
 	}
+private:
+	// Takes in the inputs of a, b, c
+	double input[3];
+	// Hidden nodes
+	double nodes[NODE_AMOUNT];
+	// Outputs x
+	double output = 0;
+
+	// Generation, Index 1, Index 2
+	int parents[3] = { -1, -1, -1 };
 };
