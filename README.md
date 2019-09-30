@@ -1,14 +1,13 @@
 # genetic-algorithm
-A C++ genetic algorithm I made for fun that learns to work out simple linear equations. If you want to modify anything, feel free to but just read the license first. There are a lot of possibilities like changing the type of equation, amount of node layers, the natural selection process: like I said feel free to play around with the code.
+A C++ genetic algorithm I made for fun that learns to work out simple linear equations. If you want to modify anything, feel free to.
 
-## Customisation
-There are various constants that you can customise inside of the main file:
+## Constants
 
 ### TESTS
 The amount of equations that each creature has to attempt. Increasing this constant will make it take more generations for the creatures to reach a higher fitness since they have to gain a set of genes that works across the board.
 
 ### NODE_AMOUNT
-The amount of "nodes" that the creatures uses to calculate the answer (akin to neurons).
+The amount of nodes in the single hidden layer.
 
 ### CREATURES
 The amount of creatures created for each generation.
